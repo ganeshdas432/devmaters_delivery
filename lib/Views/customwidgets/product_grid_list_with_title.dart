@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
+import '../pages/product/product_list.dart';
 import '../pages/product/product_view.dart';
 
 Column ProductGridList(String title) {
@@ -26,7 +27,9 @@ Column ProductGridList(String title) {
                 color: Colors.white,
                 style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Colors.green)),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(ProductList(title));
+                },
                 icon: Icon(Icons.chevron_right))
           ],
         ),

@@ -17,6 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white
+        ),
         cardTheme: CardTheme(
           surfaceTintColor: Colors.white,
           color: Colors.white

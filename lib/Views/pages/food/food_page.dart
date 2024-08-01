@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:devmaters_delivery/Views/pages/product/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -44,31 +45,36 @@ class FoodPage extends StatelessWidget {
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return Card(
-                              elevation: 5,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 8.0),
-                              child: Container(
-                                width: 150,
-                                height: 48,
-                                margin: EdgeInsets.symmetric(horizontal: 8),
-                                decoration: BoxDecoration(),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Icon(Icons.emoji_food_beverage_rounded),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Text(
-                                      categories[index],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16),
-                                    )
-                                  ],
+                            return GestureDetector(
+                              onTap: () {
+                                Get.to(ProductList(categories[index]));
+                              },
+                              child: Card(
+                                elevation: 5,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 8.0),
+                                child: Container(
+                                  width: 150,
+                                  height: 48,
+                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: BoxDecoration(),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Icon(Icons.emoji_food_beverage_rounded),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(
+                                        categories[index],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
