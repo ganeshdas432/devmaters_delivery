@@ -3,6 +3,7 @@ import 'package:devmaters_delivery/Views/pages/food/food_page.dart';
 import 'package:devmaters_delivery/Views/pages/grocery/grocery_page.dart';
 import 'package:devmaters_delivery/Views/pages/porter/porter_page.dart';
 import 'package:devmaters_delivery/Views/pages/product/product_view.dart';
+import 'package:devmaters_delivery/Views/pages/ride/book_ride.dart';
 import 'package:devmaters_delivery/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,11 +17,12 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var pages=[FoodPage(),GroceryPage(),PorterPage()];
+    var pages=[FoodPage(),GroceryPage(),BookRide(),PorterPage(),];
     List<String> homeTabs = [
       'Food',
       'Grocery',
-      'Porter'
+      'Book Ride',
+      'Porter',
     ];
     var homeController = Get.find<HomeController>();
     return Scaffold(
