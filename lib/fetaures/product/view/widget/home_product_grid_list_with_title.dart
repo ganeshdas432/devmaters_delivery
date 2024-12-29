@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:devmaters_delivery/controllers/product_controller.dart';
+import 'package:devmaters_delivery/fetaures/product/controllers/product_controller.dart';
+import 'package:devmaters_delivery/fetaures/product/model/product.dart';
+import 'package:devmaters_delivery/fetaures/product/view/widget/product_grid_list_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
-import '../../Core/constant.dart';
-import '../pages/product/product_list.dart';
-import '../pages/product/product_view.dart';
+import '../../../../Core/constant.dart';
+import '../pages/product_list.dart';
+import '../pages/product_view.dart';
 
 Column HomeProductGridList(String title, String shoptype) {
   ProductController productController = Get.find();
@@ -14,26 +16,26 @@ Column HomeProductGridList(String title, String shoptype) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Padding(
-        padding: const EdgeInsets.only(left: 8.0, top: 4, bottom: 4,right: 8.0),
+        padding: const EdgeInsets.only(left: 8.0, top: 4, bottom: 16,right: 8.0),
         child: Row(
           children: [
-            Icon(Icons.list_alt),
-            SizedBox(
+            const Icon(Icons.list_alt),
+            const SizedBox(
               width: 8,
             ),
             Text(
               title,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
                 color: Colors.white,
-                style: ButtonStyle(
+                style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Colors.green)),
                 onPressed: () {
                   Get.to(ProductListScreen());
                 },
-                icon: Icon(Icons.chevron_right))
+                icon: const Icon(Icons.chevron_right))
           ],
         ),
       ),
@@ -43,105 +45,14 @@ Column HomeProductGridList(String title, String shoptype) {
               desiredItemWidth: 150,
               minSpacing: 10,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: productController.foodProducts.value.map((product) {
                 return GestureDetector(
                   onTap: () {
                     Get.to(ProductView(product: product),
                         transition: Transition.noTransition);
                   },
-                  child: Card(
-                    elevation: 5,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 190,
-                          padding: EdgeInsets.all(8.00),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)),
-                          ),
-                          alignment: const Alignment(0, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl: product.image!.isNotEmpty
-                                    ? "${ConstantData.baseurl}/storage/${product.image}"
-                                    : "https://via.placeholder.com/100", // Placeholder if no image
-                                height: 100,
-                                width: double.maxFinite,
-                                fit: BoxFit.cover,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                product.productName!,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                "₹ ${product.attributes!.isNotEmpty ? product.attributes![0].price : "0.00"}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                "${product.attributes!.isNotEmpty ? product.attributes![0].title : ""}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            height: 24,
-                            width: 80,
-                            margin: EdgeInsets.only(top: 8.0),
-                            padding: const EdgeInsets.all(2),
-                            decoration: const BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5))),
-                            child: Center(
-                              child: Row(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    "${product.averageRating}",
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: ProductGridListCard(product),
                 );
               }).toList());
         }else if(shoptype=="LS"){
@@ -149,105 +60,14 @@ Column HomeProductGridList(String title, String shoptype) {
               desiredItemWidth: 150,
               minSpacing: 10,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: productController.shopListProducts.value.map((product) {
                 return GestureDetector(
                   onTap: () {
                     Get.to(ProductView(product: product),
                         transition: Transition.noTransition);
                   },
-                  child: Card(
-                    elevation: 5,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 190,
-                          padding: EdgeInsets.all(8.00),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)),
-                          ),
-                          alignment: const Alignment(0, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl: product.image!.isNotEmpty
-                                    ? "${ConstantData.baseurl}/storage/${product.image}"
-                                    : "https://via.placeholder.com/100", // Placeholder if no image
-                                height: 100,
-                                width: double.maxFinite,
-                                fit: BoxFit.cover,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                product.productName!,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                "₹ ${product.attributes!.isNotEmpty ? product.attributes![0].price : "0.00"}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                "${product.attributes!.isNotEmpty ? product.attributes![0].title : ""}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            height: 24,
-                            width: 80,
-                            margin: EdgeInsets.only(top: 8.0),
-                            padding: const EdgeInsets.all(2),
-                            decoration: const BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5))),
-                            child: Center(
-                              child: Row(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    "${product.averageRating}",
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: ProductGridListCard(product),
                 );
               }).toList());
         }else{
@@ -256,105 +76,14 @@ Column HomeProductGridList(String title, String shoptype) {
               desiredItemWidth: 150,
               minSpacing: 10,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: productController.groceryProducts.value.map((product) {
                 return GestureDetector(
                   onTap: () {
                     Get.to(ProductView(product: product),
                         transition: Transition.noTransition);
                   },
-                  child: Card(
-                    elevation: 5,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 190,
-                          padding: EdgeInsets.all(8.00),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)),
-                          ),
-                          alignment: const Alignment(0, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl: product.image!.isNotEmpty
-                                    ? "${ConstantData.baseurl}/storage/${product.image}"
-                                    : "https://via.placeholder.com/100", // Placeholder if no image
-                                height: 100,
-                                width: double.maxFinite,
-                                fit: BoxFit.cover,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                product.productName!,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                "₹ ${product.attributes!.isNotEmpty ? product.attributes![0].price : "0.00"}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                "${product.attributes!.isNotEmpty ? product.attributes![0].title : ""}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            height: 24,
-                            width: 80,
-                            margin: EdgeInsets.only(top: 8.0),
-                            padding: const EdgeInsets.all(2),
-                            decoration: const BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5))),
-                            child: Center(
-                              child: Row(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    "${product.averageRating}",
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: ProductGridListCard(product),
                 );
               }).toList());
         }
@@ -363,3 +92,4 @@ Column HomeProductGridList(String title, String shoptype) {
     ],
   );
 }
+

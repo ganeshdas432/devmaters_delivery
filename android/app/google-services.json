@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "528911413255",
+    "project_id": "devmasters-delivery",
+    "storage_bucket": "devmasters-delivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528911413255:android:ceb9397338e1515d0f7aa2",
+        "android_client_info": {
+          "package_name": "in.devmasters.devmaters_delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeW9AgSCntoVEAIVwz8YrQ5j0aISmw2Vo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,26 +1,33 @@
+import '../../../Core/constant.dart';
+
 class Category {
-  final int id;
-  final String title;
-  final String createdAt;
-  final String updatedAt;
-  final String shopType;
+  int? id;
+  String? title;
+  String? image;
+  String? createdAt;
+  String? updatedAt;
+  String? shopType;
 
-  Category({
-    required this.id,
-    required this.title,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.shopType,
-  });
+  Category(
+      {this.id, this.title, this.image,this.createdAt, this.updatedAt, this.shopType});
 
-  // Factory constructor to create a Category from JSON
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(
-      id: json['id'],
-      title: json['title'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      shopType: json['shop_type'],
-    );
+  Category.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    image="${ConstantData.baseurl}storage/" + json['image'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    shopType = json['shop_type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['image']=this.image;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['shop_type'] = this.shopType;
+    return data;
   }
 }

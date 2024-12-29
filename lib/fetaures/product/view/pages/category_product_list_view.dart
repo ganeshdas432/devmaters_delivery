@@ -1,9 +1,7 @@
-import 'package:devmaters_delivery/Views/pages/product/product_list.dart';
+import 'package:devmaters_delivery/fetaures/product/view/pages/product_list.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../../../controllers/product_controller.dart';
-import '../../../fetaures/category/model/category.dart';
+import '../../../category/model/category.dart';
 
 class CategoryProductListView extends StatefulWidget {
   final Category category;

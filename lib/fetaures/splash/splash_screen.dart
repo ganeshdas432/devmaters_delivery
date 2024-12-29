@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:devmaters_delivery/Views/pages/homepage/homepage.dart';
+import 'package:devmaters_delivery/fetaures/home/view/page/homepage.dart';
 import 'package:devmaters_delivery/fetaures/auth/controller/auth_controller.dart';
 import 'package:devmaters_delivery/fetaures/auth/view/pages/login_page.dart';
+import 'package:devmaters_delivery/fetaures/introduction/presentation/pages/CheckIntroductionScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer( const Duration (seconds: 5),()
     {
-        Get.off(AuthWrapper(),transition: Transition.noTransition);
+        Get.off(CheckIntroductionScreen());
     });
 
   }
@@ -59,22 +60,3 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class AuthWrapper extends StatelessWidget {
-
-  final AuthController authController=Get.put(AuthController());
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 1), () {
-      authController.checkLoginStatus();
-    });
-
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),  // Optional: Display loading while checking
-      ),
-    );
-  }
-}

@@ -1,7 +1,9 @@
-import 'package:devmaters_delivery/Views/pages/homepage/homepage.dart';
-import 'package:devmaters_delivery/controllers/login_controller.dart';
+import 'package:devmaters_delivery/fetaures/home/view/page/homepage.dart';
+import 'package:devmaters_delivery/fetaures/auth/controller/login_controller.dart';
+import 'package:devmaters_delivery/fetaures/auth/view/pages/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,7 +23,6 @@ class _LoginPageState extends State<LoginPage> {
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
     bool _obscureText = true;
-    bool emailFieldVisible =true;
 
     void _togglePasswordVisibility() {
       setState(() {
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.center,
                       margin: const EdgeInsets.only(top: 30.0) ,
                       child: const Text(
-                        'Login or Sign Up',
+                        'Login',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 24.0,
@@ -91,79 +92,50 @@ class _LoginPageState extends State<LoginPage> {
                                   children: <Widget>[
 
                                     // Phone number layout equivalent
-                                    Container(
-                                      margin: const EdgeInsets.only(bottom: 20),
-                                      child: Visibility(
-                                        visible: true,
+                                    Visibility(
+                                      visible: true,
 
 
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(top: 20.0), // Equivalent to @dimen/_20sdp
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: Colors.grey),
-                                              borderRadius: BorderRadius.circular(4.0),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 20.0), // Equivalent to @dimen/_20sdp
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.grey),
+                                            borderRadius: BorderRadius.circular(4.0),
+                                          ),
+                                          child: TextFormField(
+                                            decoration: const InputDecoration(
+                                              hintText: 'Email',
+                                              border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+                                              contentPadding: EdgeInsets.symmetric(vertical: 11.0, horizontal: 10.0), // Equivalent to @dimen/_3sdp for padding top
+                                              hintStyle: TextStyle(color: Colors.grey), // Equivalent to @color/text_color_grey
                                             ),
-                                            child: TextFormField(
-                                              decoration: const InputDecoration(
-                                                hintText: 'Email',
-                                                border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-                                                contentPadding: EdgeInsets.symmetric(vertical: 11.0, horizontal: 10.0), // Equivalent to @dimen/_3sdp for padding top
-                                                hintStyle: TextStyle(color: Colors.grey), // Equivalent to @color/text_color_grey
-                                              ),
-                                              controller:_emailController,
-                                              validator: (value) {
-                                                if (value == null || value.isEmpty) {
-                                                  return 'Please Enter your Email ';
-                                                }
-                                                String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-                                                RegExp regExp = RegExp(pattern);
-                                                if (!regExp.hasMatch(value)) {
-                                                  return 'Please enter a valid email address';
-                                                }
-                                                return null;
+                                            controller:_emailController,
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return 'Please Enter your Email ';
+                                              }
+                                              String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+                                              RegExp regExp = RegExp(pattern);
+                                              if (!regExp.hasMatch(value)) {
+                                                return 'Please enter a valid email address';
+                                              }
+                                              return null;
 
-                                              },
-                                              style: const TextStyle(
-                                                color: Colors.black, // Equivalent to @color/text_color_black
-                                                fontSize: 13.0, // Equivalent to @dimen/_13sdp
-                                              ),
+                                            },
+                                            style: const TextStyle(
+                                              color: Colors.black, // Equivalent to @color/text_color_black
+                                              fontSize: 13.0, // Equivalent to @dimen/_13sdp
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
 
-                                    Visibility(
-                                        visible: false,
-                                        child:TextFormField(
-                                          decoration: const InputDecoration(
-                                            hintText: 'Phone Number',
+
+                                    SizedBox(height: 16,),
 
 
-                                            border:OutlineInputBorder(borderRadius: BorderRadius.zero),
-                                            contentPadding: EdgeInsets.symmetric(vertical: 11.0, horizontal: 10.0), // Equivalent to @dimen/_3sdp for padding top
-                                            hintStyle: TextStyle(color: Colors.grey), // Equivalent to @color/text_color_grey
-                                          ),
-                                          keyboardType: TextInputType.phone,
-                                          validator: (value) {
-                                            if (value == null || value.isEmpty) {
-                                              return 'Please Enter your Phone Number';
-                                            }
-                                            if (value.length != 10) {
-                                              return 'Please enter a valid phone number';
-                                            }
-                                            return null;
-
-                                          },
-
-
-
-                                          style: const TextStyle(
-                                            color: Colors.black, // Equivalent to @color/text_color_black
-                                            fontSize: 12.0, // Equivalent to @dimen/_12sdp
-                                          ),
-                                        )),
                                     TextFormField(
                                       decoration: InputDecoration(
                                         hintText: 'Password',
@@ -202,10 +174,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         // TextView "We'll call or text to confirm" equivalent
                         const Padding(
-                          padding: EdgeInsets.only(top: 5.0,left: 5.0,right: 5.0),
+                          padding: EdgeInsets.only(top: 5.0,left: 16.0,right: 16.0),
                           // Equivalent to @dimen/_5sdp
                           child: Text(
-                            "We'll call or text to confirm your number,Standard message and data rates apply",
+                            "By proceeding authentication process you are accepting terms and conditions",
                             style: TextStyle(
                               fontFamily: 'AirbnbCerealMedium', // Equivalent to @font/airbnbcerealmedium
                               fontSize: 11.0, // Equivalent to @dimen/_11sdp
@@ -215,20 +187,20 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         // Continue button equivalent
                         Padding(
-                          padding: const EdgeInsets.only(top: 30.0), // Equivalent to @dimen/_30sdp
-                          child: Center(
-
+                          padding: const EdgeInsets.only(top: 30.0,left: 16,right: 16), // Equivalent to @dimen/_30sdp
+                          child: SizedBox(
+                            width: double.maxFinite,
                             child: ElevatedButton(
 
                               //  onPressed: _submitForm, // Equivalent to android:enabled="false"
                               onPressed: () {
                                 print("clicked");
-                                loginController.login(_emailController.text.toString(), _passwordController.text.toString());
+                                loginController.website_login(_emailController.text.toString(), _passwordController.text.toString());
 
 
                               },
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(Colors.grey), // Equivalent to @drawable/un_selected_btn_grey
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green, // Equivalent to @drawable/un_selected_btn_grey
                               ),
                               child: const Text(
                                 'Login', // Equivalent to @string/continue_string
@@ -268,57 +240,37 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         // Continue with Email button equivalent
+
                         Padding(
-                          padding: const EdgeInsets.only(top: 20.0,right: 8.0,left: 8.0), // Equivalent to @dimen/_20sdp
-                          child: Container(
-                            height: 48.0, // Equivalent to @dimen/btn_height
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.email, size: 20.0),
-                                SizedBox(width: 10.0),
-                                Text(
-                                  'Continue with Gmail',
-                                  style: TextStyle(
-                                    color: Colors.black, // Equivalent to @color/text_color_black
-                                    fontSize: 18.0, // Equivalent to @dimen/btn_textSize
-                                  ),
+                          padding: const EdgeInsets.only(top: 30.0,left: 16,right: 16), // Equivalent to @dimen/_30sdp
+                          child: SizedBox(
+                            width: double.maxFinite,
+                            child: ElevatedButton(
+
+                              //  onPressed: _submitForm, // Equivalent to android:enabled="false"
+                              onPressed: () {
+                                Get.to(RegistrationPage());
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue, // Equivalent to @drawable/un_selected_btn_grey
+                              ),
+                              child: const Text(
+                                'Create New Account', // Equivalent to @string/continue_string
+                                style: TextStyle(
+                                  color: Colors.white, // Equivalent to custom:textColor="@color/white"
+                                  fontSize: 18.0, // Equivalent to @dimen/btn_textSize
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ) ,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0,right: 8.0,left: 8.0), // Equivalent to @dimen/_20sdp
-                          child: Container(
-                            height: 48.0, // Equivalent to @dimen/btn_height
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.facebook, size: 20.0),
-                                SizedBox(width: 10.0),
-                                Text(
-                                  'Continue with Facebook',
-                                  style: TextStyle(
-                                    color: Colors.black, // Equivalent to @color/text_color_black
-                                    fontSize: 18.0, // Equivalent to @dimen/btn_textSize
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+
+
                         // Other social login buttons can be added similarly
                       ],
                     ),
+                    SizedBox(height: 40,),
+                    Center(child: "version: 1.0.0".text.center.make())
                   ],
                 ),
               ),

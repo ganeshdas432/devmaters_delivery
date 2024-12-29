@@ -1,20 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:devmaters_delivery/Views/pages/product/category_product_list_view.dart';
-import 'package:devmaters_delivery/Views/pages/shop/shop_detail_view.dart';
-import 'package:devmaters_delivery/controllers/product_controller.dart';
+import 'package:devmaters_delivery/fetaures/product/view/pages/category_product_list_view.dart';
+import 'package:devmaters_delivery/fetaures/product/view/pages/search_product_list_view.dart';
+import 'package:devmaters_delivery/fetaures/shop/view/pages/shop_detail_view.dart';
+import 'package:devmaters_delivery/fetaures/product/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../../../Core/customWidgets/dashboard_slider/view/dashboard_slider.dart';
-import '../../../Core/dasboardSlideshow.dart';
-import '../../../controllers/category_controller.dart';
-import '../../../controllers/home_controller.dart';
-import '../../../controllers/shop_controller.dart';
-import '../../customwidgets/home_product_grid_list_with_title.dart';
-import '../../customwidgets/similar_product_grid_list_with_title.dart';
-import '../../widgets/shop_cart.dart';
-import '../product/product_list.dart';
+import '../../../../Core/customWidgets/dashboard_slider/view/dashboard_slider.dart';
+import '../../../product/controllers/category_controller.dart';
+import '../../../shop/controllers/shop_controller.dart';
+import '../../../product/view/widget/home_product_grid_list_with_title.dart';
+import '../../../shop/view/widget/shop_cart.dart';
 
 
 class FoodPage extends StatefulWidget {
@@ -53,45 +49,37 @@ class _FoodPageState extends State<FoodPage> {
                 color: Colors.white,
                 child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 16),
-                        child: Row(
-                          children: [
-                            const Expanded(
-                              child: SizedBox(
-                                height: 48,
-                                child: SearchBar(
-                                  shape: WidgetStatePropertyAll(
-                                      RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
-                                  ),
-                                  padding: WidgetStatePropertyAll(EdgeInsets.only(left: 12)),
-                                  surfaceTintColor: WidgetStatePropertyAll(Colors.white),
-                                  backgroundColor: WidgetStatePropertyAll(Colors.white),
-                                  hintText:"Search Food Here...",
-                                  elevation:WidgetStatePropertyAll(10),
-                                  leading: Icon(FontAwesomeIcons.magnifyingGlass),
-                                ),
-                              ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(SearchProductListView("Product List"));
+                          },
+                          child: const Card(
+                            child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.search),
+                                 SizedBox(width: 10,),
+                                 Text("Search..."),
+                              ],
+
                             ),
-                            const SizedBox(width: 8,),
-                            IconButton(
-                                style: IconButton.styleFrom(
-                                  backgroundColor: Colors.green[50],
-                                  fixedSize: const Size(48, 48),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  )
-                                ),
-                                onPressed: () {
-                              
-                            }, icon: const Icon(FontAwesomeIcons.arrowDownWideShort))
-                          ],
+                          ),),
                         ),
                       ),
-                      Dashboard_Slider("FS"),
+                      DashboardSlider("FS"),
+                      const SizedBox(height: 16,),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text("Categories",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),),
+                      ),
+                      const SizedBox(height: 16,),
                       SizedBox(
-                        height: 54,
+                        height: 100,
                         child: Obx(
                           () {
 
@@ -107,32 +95,52 @@ class _FoodPageState extends State<FoodPage> {
                                     productController.filterByCategory(categories[index]);
                                     Get.to(CategoryProductListView(category: categories[index]));
                                   },
-                                  child: Card(
-                                    elevation: 5,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 8.0),
-                                    child: Container(
-                                      width: 150,
-                                      height: 48,
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: const BoxDecoration(),
-                                      child: Row(
-                                        children: [
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          const Icon(Icons.emoji_food_beverage_rounded),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            categories[index].title!,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16),
+                                  child: Container(
+                                    width: 100,
+                                    height: 100,
+                                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                                    decoration: const BoxDecoration(),
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                          child: categories[index].image != null && categories[index].image!.isNotEmpty
+                                              ? Image.network(
+                                            categories[index].image!,
+                                            width: double.infinity,
+                                            height: 75,
+                                            fit: BoxFit.cover, // Ensures the image fits properly within the dimensions
+                                            errorBuilder: (context, error, stackTrace) {
+                                              // Handle error loading the image
+                                              return Container(
+                                                width: double.infinity,
+                                                height: 75,
+                                                color: Colors.grey[300], // Placeholder background color
+                                                child: const Icon(Icons.image, color: Colors.grey), // Placeholder icon
+                                              );
+                                            },
                                           )
-                                        ],
-                                      ),
+                                              : Container(
+                                            width: double.infinity,
+                                            height: 75,
+                                            color: Colors.grey[300], // Placeholder background color
+                                            child: const Icon(Icons.broken_image, color: Colors.grey), // Placeholder icon for missing image
+                                          ),
+                                        ),
+
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          categories[index].title!,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 );
@@ -141,6 +149,12 @@ class _FoodPageState extends State<FoodPage> {
                           }
 
                         ),
+                      ),
+                      const SizedBox(height: 16,),
+
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text("Shop List",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),),
                       ),
                       const SizedBox(height: 16,),
                       SizedBox(
@@ -167,7 +181,7 @@ class _FoodPageState extends State<FoodPage> {
                         }),
                       ),
                       const SizedBox(height: 16,),
-                      HomeProductGridList("OUR PRODUCTS","FS"),
+                      HomeProductGridList("PRODUCTS","FS"),
                       const SizedBox(height: 16,),
 
                     ],

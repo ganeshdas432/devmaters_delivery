@@ -1,20 +1,16 @@
 import 'package:devmaters_delivery/fetaures/product/view/pages/product_list.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../../controllers/product_controller.dart';
-import '../../../category/model/category.dart';
 
-class CategoryProductListView extends StatefulWidget {
-  final Category category;
-
-  CategoryProductListView({required this.category});
+class SearchProductListView extends StatefulWidget {
+  String title;
+  SearchProductListView(this.title);
 
   @override
-  State<CategoryProductListView> createState() => _CategoryProductListViewState();
+  State<SearchProductListView> createState() => _SearchProductListViewState();
 }
 
-class _CategoryProductListViewState extends State<CategoryProductListView> {
+class _SearchProductListViewState extends State<SearchProductListView> {
 
   @override
   void initState() {
@@ -27,10 +23,24 @@ class _CategoryProductListViewState extends State<CategoryProductListView> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("${widget.category.title}"),
+        title: Text("${widget.title}"),
       ),
-      body: ProductListScreen(), // Reuse ProductListScreen
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 16.0),
+            child: SearchBar(
+              leading: Icon(Icons.search),
+              hintText: "Search",
+              backgroundColor: WidgetStatePropertyAll(Colors.white),
+              padding: WidgetStatePropertyAll(EdgeInsets.only(left: 16)),
+            ),
+          ),
+          Expanded(child: ProductListScreen()),
+        ],
+      ), // Reuse ProductListScreen
     );
   }
 }

@@ -1,32 +1,37 @@
-import 'package:devmaters_delivery/Views/pages/order/order_details.dart';
+import 'package:devmaters_delivery/fetaures/orders/controller/OrderController.dart';
+import 'package:devmaters_delivery/fetaures/orders/view/pages/order_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+class OrderScreen extends StatelessWidget {
+  final OrderController orderController = Get.find<OrderController>(tag: "Order Controller");
 
-class OrderPage extends StatelessWidget {
-  const OrderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Orders"),
-      ),
-      body: ListView.builder(itemBuilder: (context, index) {
+      appBar: AppBar(title: const Text('Orders')),
+      body: Obx(() {
+        if (orderController.loading.value) {
+          return const Center(child: CircularProgressIndicator()); // Show loading indicator
+        }
+        if (orderController.orders.isEmpty) {
+          return const Center(child: Text('No orders found')); // Show message if no orders
+        }
+        return RefreshIndicator(
+          onRefresh: () async{
+            orderController.fetchOrders();
+          },
 
-        return Card(
-          elevation: 5,
-          margin: EdgeInsets.symmetric(horizontal: 16,vertical: 4),
-          child: ListTile(
-            onTap: () {
-              Get.to(OrderDetails());
+          child: ListView.builder(
+            itemCount: orderController.orders.length,
+            itemBuilder: (context, index) {
+              final order = orderController.orders[index];
+              return OrderCard(order: order);
             },
-            title: Text("#125475"),
-            subtitle: Text("100.00"),
-            trailing: Text("Delivered"),
           ),
         );
-      },),
+      }),
     );
   }
 }

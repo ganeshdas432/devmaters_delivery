@@ -1,16 +1,15 @@
 import 'dart:convert';
-import 'package:devmaters_delivery/fetaures/orders/controller/cart_Controller.dart';
+import 'package:devmaters_delivery/Core/constant.dart';
+import 'package:devmaters_delivery/fetaures/map/controllers/porter_location_picker_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-import '../../home/controllers/my_location_picker_controller.dart';
-import '../../map/controllers/ride_location_picker_controller.dart';
 
-class RideApiClient {
-  static const String _baseUrl = 'https://drive.elayd.com/api';
-  RideLocationPickerController rideLocationPickerController = Get.find();
+class PorterApiClient {
+  static const String _baseUrl = '${ConstantData.baseurl}api';
+  PorterLocationPickerController porterLocationPickerController = Get.find();
 
 
   final storage = GetStorage();
@@ -42,24 +41,24 @@ class RideApiClient {
     String name=storage.read('user')['name'];
 
     String subtotal="00.00";
-    String deliveryCharges=rideLocationPickerController.calculateFare(25.0).toString();
-    String distance=rideLocationPickerController.distance.value.toString();
+    String deliveryCharges=porterLocationPickerController.calculateFare(25.0).toString();
+    String distance=porterLocationPickerController.distance.value.toString();
     String shopname="";
 
-    String pickuplat=rideLocationPickerController.pickuplat.value.toString();
-    String pickuplong=rideLocationPickerController.pickuplong.value.toString();
-    String pickupaddress=rideLocationPickerController.pickupaddress.value.toString();
+    String pickuplat=porterLocationPickerController.pickuplat.value.toString();
+    String pickuplong=porterLocationPickerController.pickuplong.value.toString();
+    String pickupaddress=porterLocationPickerController.pickupaddress.value.toString();
 
 
-   String destlat = rideLocationPickerController.droplat.value.toString();
-   String droplong=rideLocationPickerController.droplong.value.toString();
-   String dropaddress=rideLocationPickerController.dropaddress.value.toString();
+   String destlat = porterLocationPickerController.droplat.value.toString();
+   String droplong=porterLocationPickerController.droplong.value.toString();
+   String dropaddress=porterLocationPickerController.dropaddress.value.toString();
 
 
 
 
 
-    final url = Uri.parse('$_baseUrl/rideorders');
+    final url = Uri.parse('$_baseUrl/porterorders');
     final orderData = prepareOrderData(cid,subtotal,mobile,name,deliveryCharges,distance,pickupaddress,pickuplat,pickuplong,destlat,droplong,dropaddress);
 
     try {
@@ -118,8 +117,8 @@ class RideApiClient {
       },
       "order_details": [
         {
-          "person_count": 1,
-          "vehicle_type": 2
+          "weight": 100.00,
+          "item_type": 2
         }
 
       ]

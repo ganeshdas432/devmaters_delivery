@@ -1,4 +1,4 @@
-import '../fetaures/category/model/category.dart';
+import '../../category/model/category.dart';
 
 class Product {
   int? id;
@@ -68,7 +68,7 @@ class Product {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['shop_id'] = this.shopId;
     data['cat_id'] = this.catId;
@@ -105,8 +105,7 @@ class Ratings {
   String? comment;
   int? stars;
   String? image;
-  Null? createdAt;
-  Null? updatedAt;
+
 
   Ratings(
       {this.id,
@@ -114,8 +113,7 @@ class Ratings {
         this.comment,
         this.stars,
         this.image,
-        this.createdAt,
-        this.updatedAt});
+        });
 
   Ratings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -123,8 +121,7 @@ class Ratings {
     comment = json['comment'];
     stars = json['stars'];
     image = json['image'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -134,8 +131,6 @@ class Ratings {
     data['comment'] = this.comment;
     data['stars'] = this.stars;
     data['image'] = this.image;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

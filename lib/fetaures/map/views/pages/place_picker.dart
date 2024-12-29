@@ -1,4 +1,6 @@
 
+import 'package:devmaters_delivery/fetaures/auth/controller/auth_controller.dart';
+import 'package:devmaters_delivery/fetaures/home/controllers/my_location_picker_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -17,10 +19,17 @@ class PlacePickerPage extends StatefulWidget {
 class _PlacePickerState extends State<PlacePickerPage> {
   String googleAPIKey = dotenv.env['GOOGLE_API_KEY']!;
   LatLng _pickedLocation = const LatLng(37.7749, -122.4194); // Default: San Francisco
-  bool _isLoading = true;
-  String? _address; // To store the fetched address
-  final LocationController locationController = Get.put(LocationController());
 
+  final LocationController locationController = Get.put(LocationController());
+  final MyLocationPickerController myLocationPickerController = Get.find();
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pickedLocation=LatLng(myLocationPickerController.pickuplat.value,myLocationPickerController.pickuplong.value);
+  }
 
   @override
   Widget build(BuildContext context) {

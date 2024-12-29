@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 
-class RideController extends GetxController {
+class PorterController extends GetxController {
   var orders = <Order>[].obs;
   var loading = true.obs; // Loading observable
   final storage = GetStorage();

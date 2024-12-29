@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:devmaters_delivery/Core/constant.dart';
+import 'package:devmaters_delivery/fetaures/product/model/product.dart';
 import 'package:http/http.dart' as http;
-import '../models/product.dart';
 
 class ProductService {
-  static const String apiUrl = 'https://drive.elayd.com/api/products';
+  static const String apiUrl = '${ConstantData.baseurl}api/products';
 
   Future<List<Product>> fetchProducts() async {
     final response = await http.get(Uri.parse(apiUrl));

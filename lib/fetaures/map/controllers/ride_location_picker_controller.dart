@@ -16,15 +16,25 @@ class RideLocationPickerController extends GetxController {
   RxString dropaddress = "".obs;
 
   RxDouble distance = 00.00.obs;
+  RxBool locationLoaded = false.obs;
+  RxSet<Polyline> polylines = <Polyline>{}.obs;
 
-  RxBool locationLoaded=false.obs;
+
+
+  updatePoly(Polyline polyline){
+    polylines.add(polyline);
+    polylines.refresh();
+
+
+  }
+
 
   updatepickup(double lat, double long, String address) {
     pickuplat.value = lat;
     pickuplong.value = long;
     pickupaddress.value = address;
 
-    if(pickupaddress.value!=""&&dropaddress!=""){
+    if (pickupaddress.value.isNotEmpty && dropaddress.isNotEmpty) {
       getDistance();
       isLocationLoaded();
     }
@@ -35,13 +45,12 @@ class RideLocationPickerController extends GetxController {
     droplong.value = long;
     dropaddress.value = address;
 
-    if(pickupaddress.value!=""&&dropaddress!=""){
+    if (pickupaddress.value.isNotEmpty && dropaddress.isNotEmpty) {
       getDistance();
       isLocationLoaded();
     }
   }
 
-  // Haversine formula to calculate distance between two lat/long points
   double calculateDistance(lat1, lon1, lat2, lon2) {
     const double radius = 6371; // Earth's radius in kilometers
     double dLat = _deg2rad(lat2 - lat1);
@@ -81,22 +90,16 @@ class RideLocationPickerController extends GetxController {
       );
 
       if (result.points.isNotEmpty) {
-        print('Route points: ${result.points}');
-
-        if (result.points.length > 1) {
-          double totalDistance = 0.0;
-          for (int i = 0; i < result.points.length - 1; i++) {
-            totalDistance += calculateDistance(
-                result.points[i].latitude,
-                result.points[i].longitude,
-                result.points[i + 1].latitude,
-                result.points[i + 1].longitude);
-          }
-          distance.value = double.parse(totalDistance.toStringAsFixed(2));
-          print("Total distance: ${totalDistance.toStringAsFixed(2)} km");
-        } else {
-          print("Only one route point found. No route distance calculated.");
+        double totalDistance = 0.0;
+        for (int i = 0; i < result.points.length - 1; i++) {
+          totalDistance += calculateDistance(
+              result.points[i].latitude,
+              result.points[i].longitude,
+              result.points[i + 1].latitude,
+              result.points[i + 1].longitude);
         }
+        distance.value = double.parse(totalDistance.toStringAsFixed(2));
+        print("Total distance: ${distance.value} km");
       } else {
         print('No route found.');
       }
@@ -105,15 +108,14 @@ class RideLocationPickerController extends GetxController {
     }
   }
 
-
-   isLocationLoaded() {
-    // Check if any of the coordinates are 0.00, return false if so
-    if (pickuplat == 0.00 || pickuplong == 0.00 || droplat == 0.00 || droplong == 0.00) {
-      locationLoaded.value= false;
-    }
-    // If all coordinates are valid (non-zero), return true
-    locationLoaded.value= true;
+  double calculateFare(double chargePerKm) {
+    return (distance.value * chargePerKm).toPrecision(2);
   }
 
-
+  isLocationLoaded() {
+    locationLoaded.value = !(pickuplat.value == 0.00 ||
+        pickuplong.value == 0.00 ||
+        droplat.value == 0.00 ||
+        droplong.value == 0.00);
+  }
 }

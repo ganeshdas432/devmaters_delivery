@@ -11,16 +11,16 @@ class OrderDetails extends StatelessWidget {
     List<String>status=['Order Placed','Picked Up','Out For Deliver','Delivered'];
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: Text("Order Details"),),
+      appBar: AppBar(title: const Text("Order Details"),),
 
       body: Column(
         children: [
 
-          Card(
+          const Card(
             elevation: 5,
             margin: EdgeInsets.all(8.00),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Column(
               children: [
                 Text("Order Details"),
@@ -49,13 +49,13 @@ class OrderDetails extends StatelessWidget {
 
           Card(
             elevation: 5,
-            margin: EdgeInsets.all(8.00),
+            margin: const EdgeInsets.all(8.00),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Text("Order Items"),
-                  Divider(),
+                  const Text("Order Items"),
+                  const Divider(),
                   ListView.builder(
                     itemCount: 2,
                     shrinkWrap: true,
@@ -69,9 +69,9 @@ class OrderDetails extends StatelessWidget {
                         height: 72,
                         width: 72,
                       ),
-                      title: Text("Product Name"),
-                      subtitle: Text("100.00*2"),
-                      trailing: Text("200.00",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                      title: const Text("Product Name"),
+                      subtitle: const Text("100.00*2"),
+                      trailing: const Text("200.00",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
                     );
                   },)
                 ],
@@ -79,11 +79,11 @@ class OrderDetails extends StatelessWidget {
             ),),
 
 
-          Card(
+          const Card(
             elevation: 5,
             margin: EdgeInsets.all(8.00),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   Text("Payment Details"),
@@ -102,15 +102,15 @@ class OrderDetails extends StatelessWidget {
 
           Card(
             elevation: 5,
-            margin: EdgeInsets.all(8.00),
+            margin: const EdgeInsets.all(8.00),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Delivery Status"),
-                  Divider(),
+                  const Text("Delivery Status"),
+                  const Divider(),
                  SizedBox(height: 40,child:
                  Row(
                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -118,9 +118,9 @@ class OrderDetails extends StatelessWidget {
                    children: status.map((item) => Column(
                      mainAxisSize: MainAxisSize.min,
                      children: [
-                       Text(item,style: TextStyle(fontSize: 12),),
-                       SizedBox(height: 8.00,),
-                       SizedBox(
+                       Text(item,style: const TextStyle(fontSize: 12),),
+                       const SizedBox(height: 8.00,),
+                       const SizedBox(
                          width: 50,
                          child: StepProgressIndicator(
                            totalSteps: 1,

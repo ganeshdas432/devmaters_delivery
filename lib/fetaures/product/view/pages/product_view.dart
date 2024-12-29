@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:devmaters_delivery/controllers/cart_Controller.dart';
+import 'package:devmaters_delivery/fetaures/orders/controller/cart_Controller.dart';
 import 'package:devmaters_delivery/fetaures/ride/view/page/book_ride.dart';
-import 'package:devmaters_delivery/models/product.dart';
+import 'package:devmaters_delivery/fetaures/product/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../Core/constant.dart';
-import '../../../models/cart_model.dart';
-import '../../customwidgets/similar_product_grid_list_with_title.dart';
+import '../../../../Core/constant.dart';
+import '../../../orders/model/cart_model.dart';
+import '../widget/similar_product_grid_list_with_title.dart';
 
 class ProductView extends StatefulWidget {
    Product product;
@@ -28,10 +28,10 @@ class _ProductViewState extends State<ProductView> {
         backgroundColor: Colors.white,
         title: Text(
           "${widget.product.productName}",
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
-        leading: SizedBox(),
+        leading: const SizedBox(),
         titleSpacing: 0.0,
       ),
       body: SafeArea(
@@ -46,15 +46,15 @@ class _ProductViewState extends State<ProductView> {
                       children: [
                         CachedNetworkImage(
                           imageUrl:
-                          "${ConstantData.baseurl}/storage/${widget.product.image}"
+                          "${ConstantData.baseurl}storage/${widget.product.image}"
                         ),
                         Align(
                           alignment: Alignment.topRight,
                           child: Container(
                             height: 32,
                             width: 72,
-                            padding: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
                                 color: Colors.green,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(5),
@@ -64,17 +64,17 @@ class _ProductViewState extends State<ProductView> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.star,
                                     color: Colors.white,
                                     size: 16,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 4,
                                   ),
                                   Text(
-                                    "${widget.product.averageRating}",
-                                    style: TextStyle(
+                                    "${widget.product.averageRating!=null?widget.product.averageRating:0.0}",
+                                    style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600),
@@ -89,8 +89,8 @@ class _ProductViewState extends State<ProductView> {
                           child: Container(
                             height: 32,
                             width: 72,
-                            padding: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
                                 color: Colors.blue,
                                 borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(5),
@@ -100,17 +100,17 @@ class _ProductViewState extends State<ProductView> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.alarm,
                                     color: Colors.white,
                                     size: 16,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 4,
                                   ),
                                   Text(
                                     "${widget.product.time} min",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600),
@@ -131,21 +131,21 @@ class _ProductViewState extends State<ProductView> {
                           Column(
                             children: [
                               IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.star)),
-                              Text("${widget.product.averageRating} Ratings")
+                                  onPressed: () {}, icon: const Icon(Icons.star)),
+                              Text("${widget.product.averageRating!=null?widget.product.averageRating:0.0} Ratings")
                             ],
                           ),
 
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: double.maxFinite,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
                           "Details",
                           style: TextStyle(
@@ -158,11 +158,11 @@ class _ProductViewState extends State<ProductView> {
                       child: Text(
                           "${widget.product.description}"),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         "Sold By",
                         style: TextStyle(
@@ -181,13 +181,13 @@ class _ProductViewState extends State<ProductView> {
             ListTile(
               title: Text(
                 "${widget.product.attributes!.first.price}",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
               ),
-              subtitle: Text("Price"),
+              subtitle: const Text("Price"),
               trailing:ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
                 ),
                   onPressed: () {
                     cartController.addProductToCart(
@@ -198,10 +198,14 @@ class _ProductViewState extends State<ProductView> {
                         price: double.parse(widget.product.attributes!.first.price.toString()),
                         quantity: 1,
                         productImage: widget.product.image,
+                        shopname: widget.product.shop!.shopName,
+                        shoplat: double.parse(widget.product.shop!.latitude!),
+                        shoplong: double.parse(widget.product.shop!.longitude!),
+                        selectedAttribute: "1"
                       ),
                     );
 
-              }, child: SizedBox(
+              }, child: const SizedBox(
                 height: 40,
                 width: 120,
                 child: Row(children: [

@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:devmaters_delivery/fetaures/orders/controller/cart_Controller.dart';
-import 'package:devmaters_delivery/fetaures/map/controllers/delivery_location_picker_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../Core/constant.dart';
-import '../../../map/views/pages/map_location_picker.dart';
+import '../../../orders/service/ApiClient.dart';
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -17,59 +15,41 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
 
-  DeliveryLocationPickerController deliveryLocationPickerController=Get.put(DeliveryLocationPickerController());
   CartController cartController=Get.find();
   String? selectedValue;
 
 
   @override
   Widget build(BuildContext context) {
+    cartController.getDistance();
     return  Scaffold(
-      body: SafeArea(child: Padding(
+      body: SafeArea(
+          child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child:cartController.cartItems.isNotEmpty? Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            SizedBox(
-              width: double.maxFinite,
-              height: 50,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.location_on_rounded,size: 36,),
-                  Expanded(
-                    child: Obx(() => deliveryLocationPickerController.dropaddress==""?const SizedBox(): Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("${deliveryLocationPickerController.dropaddress}",textAlign: TextAlign.start,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                    ),
-                    ),
-                  ),
-                  TextButton(onPressed: () async {
-                    Map<String, dynamic>? result = await Get.to(() => MapLocationPicker());
 
-                    if (result != null) {
-                      LatLng location = result['location'];
-                      String address = result['address'];
 
-                      deliveryLocationPickerController.updatedrop(location.latitude, location.longitude, address);
-                    }
-                  }, child: const Text("Change"))
-
-                ],
-              ),
-            ),
-
-            const Divider(),
-            const Row(
+             Row(
               children: [
-                Text(
-                  "Cart",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                ),
 
-                Expanded(child: Text("Vendor Name Is here",style: TextStyle(fontSize: 12),textAlign: TextAlign.right,))
+
+                const Spacer(),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Text("${cartController.cartItems.first.shopname}"),
+                  Obx(() =>  Text("Distance: ${cartController.distance} KM")),
+
+                ],)
+
+
+
+
+
               ],
             ),
 
@@ -88,7 +68,9 @@ class _CartState extends State<Cart> {
                      children: [
                        Card(elevation: 15,
                          margin: const EdgeInsets.symmetric(vertical: 16),
-                         child: CachedNetworkImage(imageUrl: "${ConstantData.baseurl}/storage/${cartController.cartItems[index].productImage}",height: 100,width: 100,),),
+                         child: ClipRRect(
+                             borderRadius: const BorderRadius.all(Radius.circular(10)),
+                             child: CachedNetworkImage(imageUrl: "${ConstantData.baseurl}storage/${cartController.cartItems[index].productImage}",height: 100,width: 100,fit: BoxFit.cover,)),),
                        const SizedBox(width: 8,),
                        Expanded(child: Column(
                          crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,13 +82,18 @@ class _CartState extends State<Cart> {
                                   Expanded(child: Text("${cartController.cartItems[index].productName}",maxLines: 1,overflow: TextOverflow.ellipsis,)),
                                  IconButton(onPressed: () {
 
+                                   setState(() {
+                                     cartController.removeCartItem(cartController.cartItems[index].productId!);
+
+                                   });
+
                                  }, icon:const Icon(Icons.cancel),color: Colors.red,)
                                ],
                              ),
                            ),
                            const Text("category name",style: TextStyle(color: Colors.black54),),
                            Row(children: [
-                              Text("₹ ${cartController.cartItems[index].price.toString()}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22),),
+                              Text("₹ ${cartController.cartItems[index].price.toString()}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 22),),
                              const Spacer(),
                              IconButton(onPressed: () {
 
@@ -141,40 +128,40 @@ class _CartState extends State<Cart> {
                   TableRow(children: [
                     Row(
                       children: [
-                        Expanded(
+                        const Expanded(
                           child: Text("Subtotal"),
                         ),
-                        Text("₹ ${cartController.subtotal.toStringAsFixed(2)}")
+                        Obx(()=>Text("₹ ${cartController.subtotal.toStringAsFixed(2)}"))
                       ],
                     )
                   ]),
                   TableRow(children: [
                     Row(
                       children: [
-                        Expanded(
+                        const Expanded(
                           child: Text("Delivery Charges"),
                         ),
-                        Text("₹ 60")
+                        Obx(() =>  Text("₹ ${cartController.delivery_charge.toStringAsFixed(2)}"))
                       ],
                     )
                   ]),
-                  TableRow(children: [
+                  const TableRow(children: [
                     Row(
                       children: [
                         Expanded(
                           child: Text("Taxes"),
                         ),
-                        Text("₹ 18")
+                        Text("₹ 0")
                       ],
                     )
                   ]),
                   TableRow(children: [
                     Row(
                       children: [
-                        Expanded(
+                        const Expanded(
                           child: Text("Total"),
                         ),
-                        Text("₹ 378")
+                        Text("₹ ${cartController.totalPrice.toStringAsFixed(2)}")
                       ],
                     )
                   ]),
@@ -187,11 +174,12 @@ class _CartState extends State<Cart> {
                 fixedSize: const Size(double.maxFinite, 48)
               ),
                 onPressed: () {
+                  ApiClient().placeOrder();
 
             }, child: const Text("Proceed")),
 
           ],
-        ),
+        ):const Center(child: Text("No Data Found"),),
       )),
     );
   }

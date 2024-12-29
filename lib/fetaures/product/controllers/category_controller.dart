@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 import 'package:http/http.dart'as http;
-import '../fetaures/category/model/category.dart';
+import '../../category/model/category.dart';
 
 class CategoryController extends GetxController {
   // Observable lists for food and grocery categories

@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:devmaters_delivery/Core/constant.dart';
 import 'package:http/http.dart'as http;
 import 'package:get/get.dart';
 
-import '../models/shop.dart';
+import '../model/shop.dart';
 
 class ShopController extends GetxController {
   var shopList = <Shop>[].obs;
@@ -18,7 +19,7 @@ class ShopController extends GetxController {
   }
 
   void fetchShops() async {
-    final response = await http.get(Uri.parse('https://drive.elayd.com/api/shoplist'));
+    final response = await http.get(Uri.parse('${ConstantData.baseurl}api/shoplist'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       var shops = data['shops'] as List;

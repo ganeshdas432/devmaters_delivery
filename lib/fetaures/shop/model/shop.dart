@@ -1,3 +1,5 @@
+import 'package:devmaters_delivery/Core/constant.dart';
+
 class Shop {
   int? id;
   String? shopName;
@@ -29,7 +31,7 @@ class Shop {
   Shop.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     shopName = json['shop_name'];
-    image = "https://drive.elayd.com/storage/" + json['image'];
+    image = "${ConstantData.baseurl}storage/" + json['image'];
     vendorId = json['vendor_id'];
     address = json['address'];
     mobile = json['mobile'];

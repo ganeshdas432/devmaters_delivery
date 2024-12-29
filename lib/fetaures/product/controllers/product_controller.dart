@@ -1,9 +1,10 @@
+import 'package:devmaters_delivery/Core/constant.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../fetaures/category/model/category.dart';
-import '../models/product.dart';
+import '../../category/model/category.dart';
+import '../model/product.dart';
 
 class ProductController extends GetxController {
   var allProducts = <Product>[].obs; // Full product list
@@ -16,7 +17,7 @@ class ProductController extends GetxController {
   var searchQuery = ''.obs;
   var selectedCategory = Rxn<Category>(); // For filtering by category
 
-  final String baseUrl = 'https://drive.elayd.com/api/products';
+  final String baseUrl = '${ConstantData.baseurl}api/products';
 
   @override
   void onInit() {

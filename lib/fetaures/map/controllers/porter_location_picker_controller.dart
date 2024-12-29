@@ -17,6 +17,9 @@ class PorterLocationPickerController extends GetxController {
 
   RxDouble distance = 00.00.obs;
 
+  RxBool locationLoaded=false.obs;
+
+
   updatepickup(double lat, double long, String address) {
     pickuplat.value = lat;
     pickuplong.value = long;
@@ -24,6 +27,8 @@ class PorterLocationPickerController extends GetxController {
 
     if(pickupaddress.value!=""&&dropaddress!=""){
       getDistance();
+      isLocationLoaded();
+
 
     }
   }
@@ -35,6 +40,8 @@ class PorterLocationPickerController extends GetxController {
 
     if(pickupaddress.value!=""&&dropaddress!=""){
       getDistance();
+      isLocationLoaded();
+
 
     }
   }
@@ -102,5 +109,17 @@ class PorterLocationPickerController extends GetxController {
       print('Error fetching route: $e');
     }
   }
+  double calculateFare(double chargePerKm) {
+    return (distance.value * chargePerKm).toPrecision(2);
+  }
+  isLocationLoaded() {
+    // Check if any of the coordinates are 0.00, return false if so
+    if (pickuplat == 0.00 || pickuplong == 0.00 || droplat == 0.00 || droplong == 0.00) {
+      locationLoaded.value= false;
+    }
+    // If all coordinates are valid (non-zero), return true
+    locationLoaded.value= true;
+  }
+
 
 }

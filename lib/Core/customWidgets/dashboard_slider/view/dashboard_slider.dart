@@ -1,19 +1,20 @@
-import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:devmaters_delivery/Core/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
-import '../../../../features/product/view/screen/productListView.dart';
 import '../controller/slider_controller.dart';
 
-class Dashboard_Slider extends StatefulWidget {
+class DashboardSlider extends StatefulWidget {
+  String shoptype;
+  DashboardSlider(this.shoptype);
+
   @override
-  State<Dashboard_Slider> createState() => _Dashboard_SliderState();
+  State<DashboardSlider> createState() => _DashboardSliderState();
 }
 
-class _Dashboard_SliderState extends State<Dashboard_Slider> {
+class _DashboardSliderState extends State<DashboardSlider> {
   final SliderController _sliderController = Get.put(SliderController());
 
   @override
@@ -26,12 +27,13 @@ class _Dashboard_SliderState extends State<Dashboard_Slider> {
   Widget build(BuildContext context) {
     return Obx(() {
       return CarouselSlider(
-        items: _sliderController.slides.map((slide) {
+        items: widget.shoptype=="FS"?_sliderController.fs.map((slide) {
+          print("test"+ConstantData.baseurl+'storage'+slide['url']);
           return Builder(
             builder: (BuildContext context) {
+
               return GestureDetector(
                 onTap: () {
-                  Get.to(ProductListView(),arguments: [slide['id'].toString(),'col',slide['title']]);
 
                 },
                 child: Card(
@@ -41,7 +43,35 @@ class _Dashboard_SliderState extends State<Dashboard_Slider> {
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(15)),
                     child: CachedNetworkImage(
-                      imageUrl: slide['image'],
+                      imageUrl: ConstantData.baseurl+'storage/'+slide['url'],
+                      fit: BoxFit.cover,
+                      height: 150,
+                      width: double.maxFinite,
+                      placeholder: (context, url) {
+                        return Center(child:Text("Loading..."));
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }).toList():_sliderController.gs.map((slide) {
+          print("test"+ConstantData.baseurl+'storage'+slide['url']);
+          return Builder(
+            builder: (BuildContext context) {
+              return GestureDetector(
+                onTap: () {
+
+                },
+                child: Card(
+                  elevation: 5,
+                  margin: const EdgeInsets.all(8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    child: CachedNetworkImage(
+                      imageUrl: ConstantData.baseurl+'storage/'+slide['url'],
                       fit: BoxFit.cover,
                       height: 150,
                       width: double.maxFinite,
